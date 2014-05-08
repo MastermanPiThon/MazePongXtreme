@@ -33,7 +33,7 @@ screen= pygame.display.set_mode((width, height))
 #Declare Variables
 x = 500
 y = 250
-speed = 2
+speed = 2.5
 moveX = 3*speed
 moveY = 3*speed
 keys = [False, False, False, False, False, False, False, False, False, False, False, False]
@@ -42,14 +42,18 @@ paddleY = 20
 paddle1Y= 20
 paddleX = 10
 paddle1X= 950
+paddle_width = 30
+paddle_height = 112
+ball_width = 38
+ball_height = 30
 
 # Loading images
 RPaddle = pygame.image.load("LeftPaddle.png")
 LPaddle = pygame.image.load("RightPaddle.png")
 Ball= pygame.image.load("Shamichael.png")
-RPaddle = pygame.transform.scale(RPaddle, (40, 150))
-LPaddle = pygame.transform.scale(LPaddle, (40, 150))
-Ball = pygame.transform.scale(Ball, (50, 40))
+RPaddle = pygame.transform.scale(RPaddle, (paddle_width, paddle_height))
+LPaddle = pygame.transform.scale(LPaddle, (paddle_width, paddle_height))
+Ball = pygame.transform.scale(Ball, (ball_width, ball_height))
 
 #Start game
 running = 1
@@ -119,14 +123,14 @@ while running:
             elif event.key==K_y:
                 keys[11]=False
 
-        RPaddlerect=pygame.Rect(RPaddle.get_rect())
-        LPaddlerect=pygame.Rect(LPaddle.get_rect())
-        Ballrect=pygame.Rect(Ball.get_rect())
-        Ballrect.left
-        if Ballrect.colliderect(RPaddlerect):
-            moveX=-moveX
-        if Ballrect.colliderect(LPaddlerect):
-            moveX=-moveX
+    LPaddlerect=pygame.Rect(paddleX, paddleY, paddle_width, paddle_height)
+    RPaddlerect=pygame.Rect(paddle1X, paddle1Y, paddle_width, paddle_height)
+    Ballrect=pygame.Rect(x, y, ball_width, ball_height)
+
+    if Ballrect.colliderect(RPaddlerect):
+        moveX = -moveX
+    if Ballrect.colliderect(LPaddlerect):
+        moveX = -moveX
 
     if keys[8] and counter == 0:
         counter = 1
@@ -142,7 +146,7 @@ while running:
         counter = 0
 
     #Creating boundaries
-    if (paddleY >= 0 and paddleY <= 350):
+    if (paddleY >= 0 and paddleY <= 388):
         if keys[0]:
             paddleY-= 4*speed
         elif keys[2]:
@@ -152,7 +156,7 @@ while running:
             paddleY = 0
         else:
             paddleY = 350
-    if (paddle1Y >= 0 and paddle1Y <= 350):
+    if (paddle1Y >= 0 and paddle1Y <= 388):
         if keys[1]:
             paddle1Y-= 4*speed
         elif keys[3]:
