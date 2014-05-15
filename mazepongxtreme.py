@@ -34,9 +34,9 @@ screen= pygame.display.set_mode((width, height))
 x = 500
 y = 250
 speed = 2.5
-moveX = 3*speed
-moveY = 3*speed
-keys = [False, False, False, False, False, False, False, False, False, False, False, False]
+moveX = 3
+moveY = 3
+keys = [False, False, False, False, False, False, False, False, False, False, False, False, False]
 counter = 0
 paddleY = 20
 paddle1Y= 20
@@ -46,6 +46,8 @@ paddle_width = 30
 paddle_height = 112
 ball_width = 38
 ball_height = 30
+lscore = 0
+rscore = 0
 
 # Loading images
 RPaddle = pygame.image.load("LeftPaddle.png")
@@ -167,6 +169,8 @@ while running:
         else:
             paddle1Y = 350
 
+    
+
 
 
 
@@ -197,32 +201,86 @@ while running:
         else:
             paddle1X = 960"""
 
-    x += moveX
-    y += moveY
+    x += moveX*speed
+    y += moveY*speed
 
     if x < 0:
-        print("left player lost")
-        pygame.quit()
-        exit(0)
+        lscore = lscore + 1
+        speed += 0.1
+        
+        pygame.font.init()
+        font = pygame.font.Font(None, 24)
+        text = font.render("Score: "+str(lscore)+" | "+str(rscore), True, (255,0,0))
+        textRect = text.get_rect()
+        textRect.centerx = screen.get_rect().centerx
+        textRect.centery = screen.get_rect().centery+48
+        screen.blit(text, textRect)
+
+        pygame.font.init()
+        font = pygame.font.Font(None, 24)
+        text = font.render("Left player lost.", True, (255,0,0))
+        textRect = text.get_rect()
+        textRect.centerx = screen.get_rect().centerx
+        textRect.centery = screen.get_rect().centery+24
+        screen.blit(text, textRect)
+        pygame.display.flip()
+        x = 500
+        y = 250
+
+        while keys[12]== False:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    pygame.quit()
+                    exit(0)
+                if event.type == pygame.KEYDOWN:
+                    if event.key==K_SPACE:
+                        keys[12]=True 
+
+
+        keys[12]= False
+        paddleY = 20
+        
     if x > 950:
-        print("right player lost")
-        pygame.quit()
-        exit(0)
+        rscore = rscore + 1
+        speed += 0.1
+
+        pygame.font.init()
+        font = pygame.font.Font(None, 24)
+        text = font.render("Score: "+str(lscore)+" | "+str(rscore), True, (255,0,0))
+        textRect = text.get_rect()
+        textRect.centerx = screen.get_rect().centerx
+        textRect.centery = screen.get_rect().centery+48
+        screen.blit(text, textRect)
+
+        pygame.font.init()
+        font = pygame.font.Font(None, 24)
+        text = font.render("Right player lost.", True, (255,0,0))
+        textRect = text.get_rect()
+        textRect.centerx = screen.get_rect().centerx
+        textRect.centery = screen.get_rect().centery+24
+        screen.blit(text, textRect)
+        pygame.display.flip()
+        x = 500
+        y = 250
+
+        while keys[12]== False:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    pygame.quit()
+                    exit(0)
+                if event.type == pygame.KEYDOWN:
+                    if event.key==K_SPACE:
+                        keys[12]=True 
+
+
+
+        keys[12]= False
+        paddle1Y = 30
+                
     if y > 460 or y < 0:
         moveY = -moveY
 
-    """if x < 50 or x > 900:
-        if paddleY < y and (paddleY + 149) > y:
-            moveX = -moveX
 
-        elif paddle1Y < y and (paddle1Y + 149) > y:
-            moveX = -moveX
-
-        elif paddleY < (y + 39) and (paddleY + 149) > (y + 39):
-            moveX = -moveX
-
-        elif paddle1Y < (y + 39) and (paddle1Y + 149) > (y + 39):
-            moveX = -moveX"""
 
     
 
