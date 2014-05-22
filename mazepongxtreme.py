@@ -50,9 +50,16 @@ lscore = 0
 rscore = 0
 
 # Loading images
+pygame.mixer.init()
 RPaddle = pygame.image.load("LeftPaddle.png")
 LPaddle = pygame.image.load("RightPaddle.png")
 Ball= pygame.image.load("Shamichael.png")
+Ooh = pygame.mixer.Sound("OOH.mp3")
+Ooh.set_volume(0.10)
+Omg = pygame.mixer.Sound("OMG.mp3")
+Omg.set_volume(0.10)
+Sharkeisha = pygame.mixer.Sound("SHARKEISHA.mp3")
+Sharkeisha.set_volume(0.05)
 RPaddle = pygame.transform.scale(RPaddle, (paddle_width, paddle_height))
 LPaddle = pygame.transform.scale(LPaddle, (paddle_width, paddle_height))
 Ball = pygame.transform.scale(Ball, (ball_width, ball_height))
@@ -130,9 +137,15 @@ while running:
     Ballrect=pygame.Rect(x, y, ball_width, ball_height)
 
     if Ballrect.colliderect(RPaddlerect):
+        Ooh.play()
         moveX = -moveX
+        speed += 0.05
+    
+        
     if Ballrect.colliderect(LPaddlerect):
+        Sharkeisha.play()
         moveX = -moveX
+        speed += 0.05
 
     if keys[8] and counter == 0:
         counter = 1
@@ -148,26 +161,19 @@ while running:
         counter = 0
 
     #Creating boundaries
-    if (paddleY >= 0 and paddleY <= 388):
+    if (paddleY >= 0):
         if keys[0]:
             paddleY-= 4*speed
-        elif keys[2]:
+    if (paddleY <= 388):
+        if keys[2]:
             paddleY+= 4*speed
-    else:
-        if paddleY < 0:
-            paddleY = 0
-        else:
-            paddleY = 350
-    if (paddle1Y >= 0 and paddle1Y <= 388):
+    if (paddle1Y >= 0):
         if keys[1]:
             paddle1Y-= 4*speed
-        elif keys[3]:
+    if (paddle1Y <= 388):
+        if keys[3]:
             paddle1Y+= 4*speed
-    else:
-        if paddle1Y < 0:
-            paddle1Y = 0
-        else:
-            paddle1Y = 350
+
 
     
 
@@ -205,8 +211,13 @@ while running:
     y += moveY*speed
 
     if x < 0:
+        keys[0] = False
+        keys[1] = False
+        keys[2] = False
+        keys[3] = False
+        
         lscore = lscore + 1
-        speed += 0.1
+        speed = 2.5
         
         pygame.font.init()
         font = pygame.font.Font(None, 24)
@@ -238,11 +249,17 @@ while running:
 
 
         keys[12]= False
-        paddleY = 20
+        paddleY = 194
+        paddle1Y = 194
         
     if x > 950:
+        keys[0] = False
+        keys[1] = False
+        keys[2] = False
+        keys[3] = False
+
         rscore = rscore + 1
-        speed += 0.1
+        speed = 2.5
 
         pygame.font.init()
         font = pygame.font.Font(None, 24)
@@ -275,7 +292,8 @@ while running:
 
 
         keys[12]= False
-        paddle1Y = 30
+        paddle1Y = 194
+        paddleY = 194
                 
     if y > 460 or y < 0:
         moveY = -moveY
