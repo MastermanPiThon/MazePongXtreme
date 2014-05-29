@@ -54,15 +54,13 @@ pygame.mixer.init()
 RPaddle = pygame.image.load("LeftPaddle.png")
 LPaddle = pygame.image.load("RightPaddle.png")
 Ball= pygame.image.load("Shamichael.png")
-Ooh = pygame.mixer.Sound("OOH.mp3")
-Ooh.set_volume(0.10)
-Omg = pygame.mixer.Sound("OMG.mp3")
-Omg.set_volume(0.10)
-Sharkeisha = pygame.mixer.Sound("SHARKEISHA.mp3")
-Sharkeisha.set_volume(0.05)
+Ooh = pygame.mixer.Sound("OOH.wav")
+Omg = pygame.mixer.Sound("OMG.wav")
+Sharkeisha = pygame.mixer.Sound("SHARKEISHA.wav")
 RPaddle = pygame.transform.scale(RPaddle, (paddle_width, paddle_height))
 LPaddle = pygame.transform.scale(LPaddle, (paddle_width, paddle_height))
 Ball = pygame.transform.scale(Ball, (ball_width, ball_height))
+
 
 #Start game
 running = 1
@@ -137,13 +135,13 @@ while running:
     Ballrect=pygame.Rect(x, y, ball_width, ball_height)
 
     if Ballrect.colliderect(RPaddlerect):
-        Ooh.play()
+        pygame.mixer.Sound.play(Ooh)
         moveX = -moveX
         speed += 0.05
     
         
     if Ballrect.colliderect(LPaddlerect):
-        Sharkeisha.play()
+        pygame.mixer.Sound.play(Sharkeisha)
         moveX = -moveX
         speed += 0.05
 
@@ -238,6 +236,8 @@ while running:
         x = 500
         y = 250
 
+
+
         while keys[12]== False:
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
@@ -251,6 +251,13 @@ while running:
         keys[12]= False
         paddleY = 194
         paddle1Y = 194
+
+        if lscore == 10:
+            print("    ")
+            print("    ")
+            print("Right Player WIns!")
+            pygame.quit()
+            
         
     if x > 950:
         keys[0] = False
@@ -261,7 +268,8 @@ while running:
         rscore = rscore + 1
         speed = 2.5
 
-        pygame.font.init()
+
+        #pygame.font.init()
         font = pygame.font.Font(None, 24)
         text = font.render("Score: "+str(lscore)+" | "+str(rscore), True, (255,0,0))
         textRect = text.get_rect()
@@ -269,7 +277,7 @@ while running:
         textRect.centery = screen.get_rect().centery+48
         screen.blit(text, textRect)
 
-        pygame.font.init()
+        #pygame.font.init()
         font = pygame.font.Font(None, 24)
         text = font.render("Right player lost.", True, (255,0,0))
         textRect = text.get_rect()
@@ -294,7 +302,13 @@ while running:
         keys[12]= False
         paddle1Y = 194
         paddleY = 194
-                
+
+        if rscore == 10:
+            print("    ")
+            print("    ")
+            print("Left Player WIns!")
+            pygame.quit()
+            
     if y > 460 or y < 0:
         moveY = -moveY
 
